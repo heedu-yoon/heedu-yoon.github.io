@@ -1,0 +1,53 @@
+---
+layout: post
+title: APM(Application Performance Management)과 BCI(byte code instrumentation)
+date: 2024-04-01 10:20:23 +0900
+category: java
+---
+사실 BCI라는 기술에 관심을 가지게 된건 업무중에 간접적으로 접했던 APM 솔루션의 원리에 대한 궁금증에서 시작되었다.
+
+## APM(Application Performance Management) 이란?
+Application Server관련 업무를 하다보면 APM(Application Performance Management)툴을 직 간접적으로 접하게 되는 것 같다.
+
+나는 간접적으로 접한 케이스 이지만 Application의 내부 로직을 모르는상태에서 병목이나 메모리릭 위치를 정확하게 잡아내는 원리가 무엇인지 문득 궁금증이 생겨 짬을 내어 조사를 조금 해보았다.
+
+- APM 솔루션의 목적은 Application운영에 있어서 발생하는 장애, 성능이슈에 대하여 효율적으로 대응할 수 있도록 정보를 수집, 분석 하는 것을 기반으로 한다.
+
+
+- 운영 환경에서 WAS아래에 여러개의 Application이 사용되는 경우가 많은데 이러한 분석결과를 통해 원인이 되는 구간을 좀 더(아니 상당히) 신속하게 특정 할 수 있도록 도와주는 것 같다.
+
+
+- 솔루션마다 다르겠지만 공통적으로 효율적인 정보수집과 함께 분석결과를 확인할 수 있는 UI가 함께 제공 되는 것 같다
+
+## APM 구조
+APM 솔루션은 크게 3가지로 구분된다.
+![APM 구조](/public/img/apmstructure.png)
+
+나는 아직 깊게 공부해보지는 않았지만 대략 공통적으로 APM 솔루션들은 이런 구조를 기반으로 하는 것 같다.
+각 역할과 함께 나는 개인적으로 실습도 해 볼 생각이니 필자 의견도 함께 적도록 하겠다.
+
+- APM Agent
+  - WAS에 붙어서 필요한 정보를 수집하는 일을 함.
+  - WAS의 성능에 영향을 주지않기 위해 최대한 간결하게 동작하지 않을까?
+  - 수집한 정보를 효율적인 형태로 저장하거나 APM Server로 전송하는 형태 필요(ELK의 Beats 같은..?)
+
+
+- APM Server
+  - APM Agent로부터 데이터를 받아 실제 분석하는 Server
+  - agent가 많은 일을 하면 WAS의 성능에 영향을 줄 수 있고 APM Client과의 연동을 위해 따로 Server가 필요했 던 것이 아닌가 하는 생각.
+  - 효율적인 분석이 필요하고 Agent와 Server를 모두 고려하여 데이터의 형태 및 구조를 설계해야 할 것 같다.
+
+
+- APM Client
+  - APM Server에서 분석한 데이터를 화면으로 보여주는 역할.
+  - Server 개발자라 화면과 관련한 부분은 빠르게 구현하기 어려울 것 같다...
+
+
+## BCI(byte code instrumentation) 이란?
+Java는 Bytecode라고하는 머신코드를 사용한다. bytecode는 JVM에만 의존적이기 때문에 JVM만 동일하다면 Java는 OS/하드웨어가 다른 환경에서도 동일한 bytecode를 구동할 수 있다. 
+</br>java가 OS에 의존하지 않는 것도 이때문이다.
+
+BCI는 클래스 로딩이나 런타임에서 이 bytecode에 변형을 가해 원하는 코드를 삽입하는 것이 가능한 기술이다.
+
+Spring에서 이야기하는 AOP도 이 기술을 기반으로 한다.
+

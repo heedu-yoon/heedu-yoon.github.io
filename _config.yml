@@ -18,13 +18,13 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Monos
-email: ejjoo7994@gmail.com
+title: My study
+email: dbsgmlen@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Themed by ejjoo
+    This is my personal blog.
 # baseurl: "/" # the subpath of your site, e.g. /blog
 # url: "http://ejjoo.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-github_username: ejjoo
+github_username: hdyoon
 highlighter: rouge
 svg:
   optimize: true
@@ -36,6 +36,9 @@ plugins:
   - jekyll-feed
 category_dir: category/
 tag_dir: tag/
+
+#disqus:
+ # shortname: heedu-yoon-github-io.disqus.com
 
 # Exclude from processing.
 # The following items will not be processed, by default.
