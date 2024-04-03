@@ -4,10 +4,21 @@ title: post-sample
 date: 2020-01-02 19:20:23 +0900
 category: sample
 ---
-# post-sample
-> Hello!
 
-This is code
-```ruby
-print 'hello world'
-```
+## jekyll를 통한 github pages post
+1. github 설치
+   1. github desktop으로 repository 생성
+      1. userName.github.io로 repository 생성(pages로 사용하기 위함)
+   1. repository clone 
+        ```command
+        git clone 
+      ```
+1. jekyll 설치
+    1. ruby 설치
+   1. jekyll 설치
+   1. jekyll 테마 다운로드
+   1. jekyll serve 실행
+1. post 작성
+    1. _posts 디렉토리 생성
+   1. _posts 디렉토리에 post 작성
+   1. post 작성
