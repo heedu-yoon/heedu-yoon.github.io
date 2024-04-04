@@ -1,0 +1,113 @@
+---
+layout: post
+title: APM(Application Performance Management)과 BCI(byte code instrumentation) - 구현기
+date: 2024-03-02 11:20:23 +0900
+category: java
+---
+## 구현
+아직 깊게 공부해보지는 않았지만 이런 기술을 개발자들이 응용할 수 있도록 Oracle에서는 JVM의 상세 스펙도 제공하는 것으로 보인다.
+
+지금 당장 이런 방식을 사용하기에는 공부가 많이 부족하니 라이브러리의 도움을 받아보기로 하자.
+
+## Byte Buddy
+필자가 사용한 라이브러리는 ByteBuddy이다. 
+
+단시간에 내가 필요로 하는 기능 사용이 가능해 보이고 구글에 최신 정보가 많은 것 같으며 Apache 2.0라이센스라 선택하게 되었다.
+
+일단 뭐가 되어야 흥미를 더 가지는 성격이라 가장 진입장벽이 낮아 보이는 라이브러리를 선택한 것도 있다.
+
+## 준비물
+ - HTTP요청을 처리하는 로직을 가진 Application Server(with tomcat)
+ - ByteBuddy라이브러리를 적용하여 APM Agent의 역할을 할 maven project(eclipse)
+ - 데이터 처리를하는 APM Server의 역할을 할 Spring Boot project(intellij)
+
+
+## 개발 목표
+ - Application Server의 코드를 수정하지 않고 원하는 로직을 주입하여 요청 처리시 실행되는 모든 method의 실행 시간을 체크할 것.
+ - APM Agent의 역할을 하는 제품은 Application Server와 연관성이 없는 독립된 로직을 가질 것.
+ - 수집한 데이터를 화면에 보일 수 있는 간단한 페이지도 함께 구현할 것.
+ - Application Server의 본래 작업에 의미있는 영향을 미치지않아야 할 것.
+
+## 구현
+![APM구현구조](/public/img/apm2.png)
+
+ - 일반적인 형태의 Application 형태로 Tomcat을 준비하고 Application의 상태를 모니터링 할 Agent를 tomcat 기동시에 javaAgent옵션을 주어 함께 로딩 되도록 한다.
+ - 바로 APM Server부로 데이터를 쏠까 하다가 일단은 Repository는 간결하게 로컬 경로를 사용해보자
+
+
+![APM구현구조](/public/img/apm3.png)
+
+ - 구현에 사용할 Application은 상주하고 있는 Thread가 Servlet으로 전달된 요청을 처리하는 구조이다.
+ - Thread가 상주하고 있기 때문에 요청의 시작점과 끝점을 체크해서 전체 처리시간을 판별해야 한다.
+
+## APM Agent
+ - 특정 패키지 내부 모든 메서드의 시작과 끝을 체크한다.
+ - 패키지 이름을 확인하고 수집이 필요하지 않은 경우에는 수집하지 않는다.
+
+```java
+// 시작점 메서드(APMAgent 부)
+  @Advice.OnMethodEnter(suppress = Throwable.class)
+  static long onEnter(
+          @Advice.This Object thisObject,
+          @Advice.Origin String origin
+      ){
+      if(!origin.contains("mypackage"))
+          return -1;
+
+      return System.currentTimeMillis();
+  }
+```
+
+ - 시작점에서는 currentTimeMillis를 리턴하고 끝점에서 이 값을 받아서 사용하자.
+
+
+
+```java
+  @Advice.OnMethodExit(suppress = Throwable.class, onThrowable = Throwable.class)
+  static void onExit(
+          @Advice.Enter long time,
+          @Advice.Origin String origin,
+          @Advice.This Object thisObject,
+          @Advice.Origin("#m") String detailedOrigin,
+          @Advice.Thrown Throwable exception,
+          @Advice.AllArguments Object[] args) {
+
+      if(!origin.contains("mypackage"))
+          return;
+
+      Thread t = Thread.currentThread();
+      String threadName = t.getName();
+
+    // process
+    }
+```
+
+ - 종료지점에서는 Thread가 요청을 모두 처리하는 동안 json형식으로 필요한 정보들을 수집하고 요청이 종료되면 파일로 기록한다.
+
+ - 지금은 APMServer가 파일을 직접 읽지만 나중에 fileBeats같은 걸 붙여서 APMServer쪽으로 쏴주는 것도 좋을 것 같다.
+
+## APM Server
+APM Server는 간결하게 사용하기 위해 SpringBoot를 사용하여 간단하게 구성하였다.
+
+기본적으로 두가지 일을 한다.
+
+1. info File을 읽어서 요청별 Response Time종합.
+1. Detail page를 위해 method별 Response Time, ThreadName을 분석
+
+## APM Client
+마찬가지로 Spring Boot로 구성하였다.
+두가지 페이지가 존재한다.
+
+1. 요청별 Response Time을 보여주는 페이지
+1. 필요한 요청을 클릭하면 해당 요청에 대해 Method 정보를 보여주는 페이지
+
+![APM화면](/public/img/apm4.png)
+
+ - 임의로 로직을 조작하여 동일한 작업을 하는 요청을 시간 차이가 나게 해보았다.
+ - 이렇게 화면을 통해 어떤 요청에 이상이 있는지 확인이 가능하다.
+
+![APM화면](/public/img/apm5.png)
+
+ - 필요한 요청을 클릭하여 메서드별 실행 시간을 확인 할 수 있다.
+ - 지금은 정상 요청과 이상 요청의 메서드 시간을 비교해보면 문제가 되는 부분을 디텍트 할 수 있다.
+ - 물론 조금만 더 개발하게 된다면 이부분도 자동화가 충분히 가능하다.
