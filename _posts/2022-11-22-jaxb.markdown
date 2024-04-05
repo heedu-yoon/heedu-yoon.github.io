@@ -1,0 +1,28 @@
+---
+layout: post
+title: JDK11 JAXB사용 시 ClassNotFoundException
+date: 2022-11-22 14:20:23 +0900
+category: java
+---
+
+## JDK11 JAXB사용 시 ClassNotFoundException
+기존 어플리케이션에서 JAVA버전을 높이는 작업을 할 때 JAXB관련 클래스에 대하여 ClassNotFoundException이 발생하였다.
+
+## 원인
+JAVA 11부터는 더이상 JAXB를 내장하고 있지 않다.
+
+JAVA 8까지는 사용가능 했지만 JAVA 9부터는 Deprecated되었고 JAVA 11에선 제거 되었다.
+
+따라서 9이후 부터는 별도 조치가 필요하다.
+
+## JAVA Version별 JAXB 사용가능 여부
+
+| JAVA Version  |상태|조치|
+|:-------------:|:--:|:--:|
+|       8       |사용가능| - |
+|       9       |Deprecated| JAVA OPTIONS : --add-modules java.xml.bind |
+|      10       |Deprecated| JAVA OPTIONS : --add-modules java.xml.bind |
+|      11~      |Removed| 별도 라이브러리 추가 필요 |
+
+
+[참고](https://www.oracle.com/java/technologies/javase/11-relnote-issues.html#JDK-8190378)
