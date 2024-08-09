@@ -2,7 +2,7 @@
 layout: post
 title: Access-Control-Allow-Origin header 여러개 설정하기
 date: 2024-03-02 19:20:23 +0900
-category: sample
+category: was
 ---
 
 Cross Domain환경에서 필요한 Access-Control-Allow-Origin은 * 또는 1개의 명시적인 Domain만 설정이 가능하다.
