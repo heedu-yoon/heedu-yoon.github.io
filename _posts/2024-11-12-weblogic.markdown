@@ -125,7 +125,7 @@ STANDBY상태의 1개 thread가 약 5초의 시간 delay중인 것으로 확인�
 #### Jmeter동작을 멈추고 5분간 대기후 thread 상태
 
 <p style="text-align:center">
-    <img src="/public/img/weblogic/img8.jpg" alt="JMeter 부하 테스트 결과"></br>
+    <img src="/public/img/weblogic/img8.jpg" alt="JMeter 부하 테스트 결과">
       Thread가 없어지지는 않았지만 1개를 제외하고 모두 STANDBY로 전환된 모습.
 </p>
 
@@ -136,21 +136,21 @@ STANDBY상태의 1개 thread가 약 5초의 시간 delay중인 것으로 확인�
 1. weblogic의 기본 설정(self tuning사용)
 
 <p style="text-align:center">
-    <img src="/public/img/weblogic/img9.png" alt="JMeter 부하 테스트 결과"></br>
+    <img src="/public/img/weblogic/img9.png" alt="JMeter 부하 테스트 결과">
     Response time이 튀는 것을 볼 수 있다. 그래프 상에서 가장 오래 걸린 Response는 약 8초까지 확인된다.
 </p>
 
 2. WebLogic의 thread 설정을 MinPoolSize=50, MaxPoolSize=50으로 설정
 
 <p style="text-align:center">
-    <img src="/public/img/weblogic/img10.png" alt="JMeter 부하 테스트 결과"></br>
+    <img src="/public/img/weblogic/img10.png" alt="JMeter 부하 테스트 결과">
     Response time이 안정되어 있는 것을 확인할 수 있다. 최초 시작은 약 8ms이지만, 안정된 이후로는 1ms이하의 Response time을 보여준다.
 </p>
 
 3. WebLogic의 thread 설정을 Use81 StyleExecuteQueues로 설정
 
 <p style="text-align:center">
-    <img src="/public/img/weblogic/img11.png" alt="JMeter 부하 테스트 결과"></br>
+    <img src="/public/img/weblogic/img11.png" alt="JMeter 부하 테스트 결과">
 </p>
 Response time이 안정되어 있는 것을 볼 수 있다. 최초 시작은 약 1.5ms이지만, 안정된 이후로는 1ms이하의 Response time을 보여준다.
 
