@@ -126,7 +126,7 @@ STANDBY상태의 1개 thread가 약 5초의 시간 delay중인 것으로 확인�
 
 <p style="text-align:center">
     <img src="/public/img/weblogic/img8.jpg" alt="JMeter 부하 테스트 결과">
-      Thread가 없어지지는 않았지만 1개를 제외하고 모두 STANDBY로 전환된 모습.
+      <br> Thread가 없어지지는 않았지만 1개를 제외하고 모두 STANDBY로 전환된 모습.
 </p>
 
 ---
