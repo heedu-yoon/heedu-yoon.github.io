@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Chrome 94 버전 이후 localhost 요청 블럭 문제
-date: 2022-02-10 11:20:23 +0900
+date: 2024-02-10 11:20:23 +0900
 category: client
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: JDK11 JAXB사용 시 ClassNotFoundException
-date: 2022-11-22 14:20:23 +0900
+date: 2024-11-22 14:20:23 +0900
 category: java
 ---
 

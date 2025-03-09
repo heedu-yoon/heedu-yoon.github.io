@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Oracle 19c에서 stored procedure 조회가 비정상적으로 오래걸리는 문제
-date: 2022-2-10 17:20:23 +0900
+date: 2024-2-10 17:20:23 +0900
 category: java
 ---
 

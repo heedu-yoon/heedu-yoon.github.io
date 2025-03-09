@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Weblogic 9이상 버전에서 응답이 딜레이 되는 케이스 (self tuning, 성능이슈)
-date: 2020-01-02 19:20:23 +0900
+date: 2024-08-02 19:20:23 +0900
 category: was
 ---
 
