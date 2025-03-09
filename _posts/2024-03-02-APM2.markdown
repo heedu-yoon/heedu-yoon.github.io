@@ -1,7 +1,7 @@
 ---
 layout: post
 title: APM(Application Performance Management)과 BCI(byte code instrumentation) - 구현기
-date: 2024-03-02 11:20:23 +0900
+date: 2024-09-02 11:20:23 +0900
 category: java
 ---
 ## 구현
